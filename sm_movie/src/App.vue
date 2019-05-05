@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>SM movie</h1>
+    <!-- <img src="./assets/logo.png"> -->
+    <router-link to="/selectPosition">
+          <a class="nav-link">Select</a>
+    </router-link>
     <router-view/>
   </div>
 </template>
