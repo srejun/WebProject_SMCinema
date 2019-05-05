@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>SM movie</h1>
+    <!-- <img src="./assets/logo.png"> -->
+    <router-link to="/selectPosition">
+          <button class="nav-link">Select</button>
+    </router-link>
+    <router-view/>
   </div>
 </template>
 
