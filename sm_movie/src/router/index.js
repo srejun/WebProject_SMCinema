@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import clock from '@/components/clock'
+import testfile from '@/components/testfile'
 import selectPosition from '@/components/selectPosition'
 import Total from '@/components/Total'
 
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'clock',
-      component: clock
+      name: 'testfile',
+      component: testfile
     },
     {
       path: '/selectPosition',

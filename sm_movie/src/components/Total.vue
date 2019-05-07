@@ -103,7 +103,7 @@ export default {
       currentTime: Date.now(),
       interval: null,
       destinationTime: Date.now() + 1800000,
-      data: {
+      form: {
         title: "",
         length: "",
         date: "",
@@ -117,19 +117,19 @@ export default {
   },
   methods: {
     reset: function() {
-      this.$data.state = "started";
-      this.$data.startTime = Date.now();
-      this.$data.currentTime = Date.now();
-      this.$data.destinationTime = Date.now() + 1799000;
+      this.$form.state = "started";
+      this.$form.startTime = Date.now();
+      this.$form.currentTime = Date.now();
+      this.$form.destinationTime = Date.now() + 1799000;
     },
     pause: function() {
-      this.$data.state = "paused";
+      this.$form.state = "paused";
     },
     resume: function() {
-      this.$data.state = "started";
+      this.$form.state = "started";
     },
     updateCurrentTime: function() {
-      if (this.$data.state == "started") {
+      if (this.$form.state == "started") {
         this.currentTime = Date.now();
       }
     }
@@ -142,7 +142,7 @@ export default {
       return this.hours + ":" + this.minutes + ":" + this.seconds;
     },
     milliseconds: function() {
-      return this.destinationTime - this.$data.currentTime;
+      return this.destinationTime - this.currentTime;
     },
     hours: function() {
       var lapsed = this.milliseconds;
@@ -161,14 +161,14 @@ export default {
     }
   },
   mounted() {
-    this.data.title = "Dumbo";
-    this.data.length = "180";
-    this.data.date = "1 Jan 2014";
-    this.data.time = "15:20";
-    this.data.theatre = "1";
-    this.data.position = "A1";
-    this.data.price = "180";
-    this.data.code = "FZSDFHBVC";
+    this.form.title = "Dumbo";
+    this.form.length = "180";
+    this.form.date = "1 Jan 2014";
+    this.form.time = "15:20";
+    this.form.theatre = "1";
+    this.form.position = "A1";
+    this.form.price = "180";
+    this.form.code = "FZSDFHBVC";
     this.interval = setInterval(this.updateCurrentTime, 1000);
 
   }

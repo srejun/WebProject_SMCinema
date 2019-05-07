@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
+    <router-link to="/">
+          <button class="nav-link">Home</button>
+    </router-link>
     <router-link to="/selectPosition">
           <button class="nav-link">Select</button>
     </router-link>
