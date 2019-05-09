@@ -1,5 +1,30 @@
 <template>
   <div class="selectPosition">
+    <div class="ui center container">
+     <h1 class="ui yellow dividing header"><i class="hand point down outline icon"></i>Select Position</h1>
+      <div class="ui center container" style="text-align: center">
+          <div class="ui ordered steps">
+            <div class="completed step">
+              <div class="content">
+                <div class="title">Showtime</div>
+                <div class="description">Select Showtime</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="content">
+                <div class="title">Booking</div>
+                <div class="description">Select Seats</div>
+              </div>
+            </div>
+            <div class="disabled step">
+              <div class="content">
+                <div class="title">Confirm Order</div>
+                <div class="description">Verify order details</div>
+              </div>
+            </div>
+          </div>
+        </div>
+     <div class="ui segment">
     <div class="ui grid">
       <div class="row">
         <div class="twelve wide column">
@@ -11,10 +36,10 @@
             </div>
             <br>
             <p></p>
-            <br>
-            <div class="row">
+            <div class="row"> 
               <div class="twelve wide column">
                 <div class="ui middle aligned center aligned grid">
+                  <div class="ui segment">
                   <table class="table">
                     <thead>
                       <th></th>
@@ -29,8 +54,11 @@
                         <td v-for="chaircol in col" v-bind:key="chaircol">
                           <!-- <th>{{chaircol}}</th> -->
                           <!-- <button class="ui button"> -->
-
-                          <router-link :to="{path: 'Total/' + buyTicket()}">
+                          <div
+                            class="field"
+                            v-if="colorredCheck[(15*(chairrow.charCodeAt(0)-65))+chaircol-1] == 'red'"
+                            @click="markgreen(chaircol,chairrow)"
+                          >
                             <img
                               class="ui image"
                               src="../assets/chair_red.png"
@@ -38,82 +66,109 @@
                               height="50px"
                             >
                             <span></span>
-                          </router-link>
+                          </div>
+                          <div
+                            class="field"
+                            v-else-if="colorredCheck[(15*(chairrow.charCodeAt(0)-65))+chaircol-1] == 'green'"
+                            @click="markred(chaircol,chairrow)"
+                          >
+                            <img
+                              class="ui image"
+                              src="../assets/chair_green.png"
+                              width="50px"
+                              height="50px"
+                            >
+                            <span></span>
+                          </div>
+                          <div class="field" v-else>
+                            <img
+                              class="ui image"
+                              src="../assets/chair_gray.png"
+                              width="50px"
+                              height="50px"
+                            >
+                            <span></span>
+                          </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="four wide column">
+          <h3 class="ui orange dividing header"><i class="clipboard icon"></i>Information</h3>
           <div class="ui cards">
             <div class="card">
               <div class="content">
-                <img
-                  class="top floated ui image"
-                  src="../assets/dumbo.jpg"
-                  width="280px"
-                  height="350px"
-                >
-                <div class="header">{{form.title}}</div>
+                <img class="top floated ui image" :src="form.imageUrl" width="280px" height="350px">
+                <div class="header">{{form.titleen}} {{form.titleth}}</div>
                 <div class="description">{{form.date}}</div>
-                <div class="description">{{form.length}} Minutes</div>
-                <div class="description">Theater {{form.theatre}}</div>
+                <div class="description"><i class="clock icon"></i>{{form.length}} Minutes</div>
+                <div class="description"><i class="film icon"></i>Theater {{form.theatre}}</div>
+                <div class="description">
+                  <div class="ui divider"></div>
+                  <div class="inline field">
+                    <div class="ui right pointing label">Seat:</div>
+                    <div class="ui label">{{getSeat()}}</div>
+                  </div>
+                </div>
+                <div class="description">
+                  <div class="ui divider"></div>
+                  <div class="inline field">
+                    <div class="ui right pointing label">Price:</div>
+                    <div class="ui label">{{calculate()}}</div>
+                  </div>
+                </div>
               </div>
               <div class="extra content">
-                <router-link :to="{ path: 'Total/' + buyTicket()}">
-                  <div class="ui two buttons">
-                    <div class="ui basic green button">Buy Ticket</div>
-                  </div>
-                </router-link>
+                <!-- <router-link :to="{ path: 'Total/' + buyTicket()}"> -->
+                <div class="ui two buttons">
+                  <div class="ui inverted green button" @click="book()">Buy Ticket</div>
+                </div>
+                <!-- </router-link> -->
               </div>
             </div>
           </div>
-          <!-- <router-link :to="{ path: 'Total/' + buyTicket()}">
-            <img
-              class="ui image"
-              src="data:image/png;base64,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"
-              width="50px"
-              height="50px"
-            >
-            <span>{{time}}</span>
-          </router-link>-->
         </div>
+      </div>
+      </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 export default {
   name: "selectPosition",
   data() {
     return {
-      row: "ABCDEF",
-      col: 15,
+      textcol: ["A", "B", "C", "D", "E", "F"],
+      row: "",
+      col: 0,
       time: 0,
-      imageUrl: "../assets/dumbo.jpg",
+      sessName: "",
+      sesSeat: [],
+      sessBooked: [],
+      colorredCheck: [],
+      totalprice: 0,
       form: {
-        title: "",
+        id: "",
+        id_theatre: "",
+        titleth: "",
+        titleen: "",
         length: "",
         date: "",
         time: "",
+        imageUrl: "",
         theatre: "",
-        position: "",
-        price: "",
-        code: ""
-      },
-      data: {
-        title: "",
-        length: "",
-        date: "",
-        time: "",
-        theatre: "",
-        position: "",
+        showTime: [],
+        seat: [],
+        booked: [],
+        confirm: [],
         price: "",
         code: ""
       },
@@ -146,15 +201,157 @@ export default {
     buyTicket() {
       var now = new Date().getTime();
       return now;
+    },
+    markgreen(col, row) {
+      let newData = {
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
+      };
+      // console.log(row+col)
+      // console.log(newData.booked[0].round1)
+      // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
+      // console.log(this.form.id_theatre)
+      this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = this.sessName;
+      // console.log(this.sesSeat);
+
+      newData.seat[0].round1.push(15 * (row.charCodeAt(0) - 65) + col - 1);
+      newData.seat[0].sessSeat = this.sesSeat;
+      //console.log(newData.seat[0]);
+      axios
+        .post(
+          "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
+          newData
+        )
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {});
+      window.location.reload();
+      //this.calculate()
+    },
+    markred(col, row) {
+      let newData = {
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
+      };
+      // console.log(row+col)
+      // console.log(newData.booked[0].round1)
+      // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
+      // console.log(this.form.id_theatre)
+      // console.log(this.booked[0]);
+      //console.log(newData.seat[0].round1);
+      for (let i = 0; i < newData.seat[0].round1.length; i++) {
+        if (
+          newData.seat[0].round1[i] ==
+          15 * (row.charCodeAt(0) - 65) + col - 1
+        ) {
+          if (
+            newData.seat[0].sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] ==
+            this.sessName
+          ) {
+            // console.log(newData.booked[0].round1[i])
+            // console.log(newData.booked[0].round1)
+
+            this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = "";
+            //console.log(this.sesSeat);
+            newData.seat[0].sessSeat = this.sesSeat;
+            delete newData.seat[0].round1[i];
+            newData.seat[0].round1 = newData.seat[0].round1.filter(
+              number => number != null
+            );
+            axios
+              .post(
+                "http://localhost:3001/Theatre/theatreupdate/" +
+                  this.form.id_theatre,
+                newData
+              )
+              .then(response => {
+                console.log(response);
+              })
+              .catch(error => {});
+            window.location.reload();
+          } // console.log("++++"+newData.booked[0].round1)
+        } else {
+          // newData.booked[0].round1[i] = this.booked[0].round1[i];
+        }
+      }
+      //this.calculate()
+      //newData.booked[0].round1.splice((15 * (row.charCodeAt(0) - 65) + col - 1),2);
+    },
+    book() {
+      let newData = {
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
+      };
+      // console.log(row+col)
+      // console.log(newData.booked[0].round1)
+      // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
+      // console.log(this.form.id_theatre)
+      newData.booked[0].round1.push([
+        15 * (row.charCodeAt(0) - 65) + col - 1,
+        this.sess
+      ]);
+      //console.log(newData.booked[0].round1);
+      // axios
+      //   .post(
+      //     "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
+      //     newData
+      //   )
+      //   .then(response => {
+      //     console.log(response);
+      //   })
+      //   .catch(error => {});
+    },
+    calculate() {
+      //console.log(this.totalprice);
+      this.totalprice = 0;
+      for (var i = 0; i < this.form.seat[0].sessSeat.length; i++) {
+        if (this.form.seat[0].sessSeat[i] == this.sessName) {
+          this.totalprice = parseInt(this.form.price) + this.totalprice;
+        }
+      }
+      //console.log(this.totalprice);
+      return this.totalprice;
+    },
+    getSeat() {
+      let Seat = "";
+      for (var j = 0; j < this.form.seat[0].sessSeat.length; j++) {
+        if (this.form.seat[0].sessSeat[j] == this.sessName) {
+          for (var i = 0; i < this.form.seat[0].round1.length; i++) {
+            Seat[i] =
+              this.textcol[
+                parseInt(parseInt(this.form.seat[0].round1[i]) / 15)
+              ] +
+              String(
+                parseInt(this.form.seat[0].round1[i]) +
+                  1 -
+                  parseInt(parseInt(this.form.seat[0].round1[i]) / 15) * 15
+              );
+          }
+        }
+      }
+
+      return Seat;
     }
   },
   mounted() {
-    //console.log(this.week[1])
     var now = new Date().getTime();
-    this.time = now;
-    this.form.title = "Dumbo";
-    this.form.length = "180";
-    this.form.time = "15:20";
+    (this.sessName = "A"), (this.time = now);
     this.form.date =
       this.form.time +
       " " +
@@ -165,10 +362,68 @@ export default {
       this.month[new Date().getMonth() + 1] +
       " " +
       new Date().getFullYear();
-    this.form.theatre = "1";
-    this.form.position = "A1";
-    this.form.price = "180";
-    this.form.code = "FZSDFHBVC";
+    this.form.id = "5cd2b7a275e78d4588c92841";
+    axios
+      .get("http://localhost:3001/Movie/" + this.form.id)
+      .then(response => {
+        //console.log(response.data);
+        this.form.titleth = response.data.movieNameThai;
+        this.form.titleen = response.data.movieName;
+        this.form.length = response.data.length;
+        this.form.imageUrl = response.data.imageUrl;
+        this.form.time = "15:20";
+        this.form.theatre = response.data.theatre;
+        this.form.price = response.data.price;
+        axios
+          .get("http://localhost:3001/Theatre/" + this.form.theatre)
+          .then(response => {
+            //console.log(response.data[0])
+            this.form.id_theatre = response.data[0]._id;
+            this.row = response.data[0].seat[0].row;
+            this.col = response.data[0].seat[0].col;
+            (this.form.showTime = response.data[0].showTime),
+              (this.form.seat = response.data[0].seat),
+              (this.form.booked = response.data[0].booked),
+              (this.form.confirm = response.data[0].confirm);
+            //console.log(this.form.seat[0]);
+            for (var i = 0; i < this.row.length * this.col; i++) {
+              //  console.log(i);
+              if (this.form.seat[0].round1.length > 0) {
+                for (var j = 0; j < this.form.seat[0].round1.length; j++) {
+                  //console.log(i, this.booked[0].round1[j]);
+                  if (i == this.form.seat[0].round1[j]) {
+                    this.colorredCheck[i] = "green";
+                    break;
+                  } else {
+                    this.colorredCheck[i] = "red";
+                  }
+                }
+              } else {
+                this.colorredCheck[i] = "red";
+              }
+
+              if (this.form.seat[0].sessSeat.length > 0) {
+                this.sesSeat = this.form.seat[0].sessSeat;
+                //console.log("SEAT HAVe");
+              } else {
+                this.sesSeat[i] = "";
+                //console.log("SEAT HAVenot");
+              }
+              if (this.form.booked[0].sessBooked.length > 0) {
+                this.sessBooked = this.form.booked[0].sessBooked;
+                //console.log("book HAVe");
+              } else {
+                this.sessBooked[i] = "";
+                //console.log("booked HAVenot");
+              }
+            }
+            //console.log(this.colorredCheck);
+          })
+          .catch(error => {});
+      })
+      .catch(error => {});
+
+    //console.log(this.form.theatre);
   }
 };
 </script>
