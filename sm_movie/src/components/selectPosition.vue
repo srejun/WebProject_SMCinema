@@ -1,5 +1,30 @@
 <template>
   <div class="selectPosition">
+    <div class="ui center container">
+     <h1 class="ui yellow dividing header"><i class="hand point down outline icon"></i>Select Position</h1>
+      <div class="ui center container" style="text-align: center">
+          <div class="ui ordered steps">
+            <div class="completed step">
+              <div class="content">
+                <div class="title">Showtime</div>
+                <div class="description">Select Showtime</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="content">
+                <div class="title">Booking</div>
+                <div class="description">Select Seats</div>
+              </div>
+            </div>
+            <div class="disabled step">
+              <div class="content">
+                <div class="title">Confirm Order</div>
+                <div class="description">Verify order details</div>
+              </div>
+            </div>
+          </div>
+        </div>
+     <div class="ui segment">
     <div class="ui grid">
       <div class="row">
         <div class="twelve wide column">
@@ -11,10 +36,10 @@
             </div>
             <br>
             <p></p>
-            <br>
-            <div class="row">
+            <div class="row"> 
               <div class="twelve wide column">
                 <div class="ui middle aligned center aligned grid">
+                  <div class="ui segment">
                   <table class="table">
                     <thead>
                       <th></th>
@@ -68,20 +93,22 @@
                       </tr>
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="four wide column">
+          <h3 class="ui orange dividing header"><i class="clipboard icon"></i>Information</h3>
           <div class="ui cards">
             <div class="card">
               <div class="content">
                 <img class="top floated ui image" :src="form.imageUrl" width="280px" height="350px">
                 <div class="header">{{form.titleen}} {{form.titleth}}</div>
                 <div class="description">{{form.date}}</div>
-                <div class="description">{{form.length}} Minutes</div>
-                <div class="description">Theater {{form.theatre}}</div>
+                <div class="description"><i class="clock icon"></i>{{form.length}} Minutes</div>
+                <div class="description"><i class="film icon"></i>Theater {{form.theatre}}</div>
                 <div class="description">
                   <div class="ui divider"></div>
                   <div class="inline field">
@@ -100,7 +127,7 @@
               <div class="extra content">
                 <!-- <router-link :to="{ path: 'Total/' + buyTicket()}"> -->
                 <div class="ui two buttons">
-                  <div class="ui basic green button" @click="book()">Buy Ticket</div>
+                  <div class="ui inverted green button" @click="book()">Buy Ticket</div>
                 </div>
                 <!-- </router-link> -->
               </div>
@@ -108,10 +135,11 @@
           </div>
         </div>
       </div>
+      </div>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 export default {
