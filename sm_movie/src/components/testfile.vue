@@ -77,7 +77,7 @@
           <div class="ui cards">
             <div class="card">
               <div class="content">
-                <img class="top floated ui image" :src="imageUrl" width="280px" height="350px">
+                <img class="top floated ui image" :src="form.imageUrl" width="280px" height="350px">
                 <div class="header">{{form.titleen}} {{form.titleth}}</div>
                 <div class="description">{{form.date}}</div>
                 <div class="description">{{form.length}} Minutes</div>
@@ -93,9 +93,9 @@
               </div>
               <div class="extra content">
                 <!-- <router-link :to="{ path: 'Total/' + buyTicket()}"> -->
-                  <div class="ui two buttons">
-                    <div class="ui basic green button" @click="book()">Buy Ticket</div>
-                  </div>
+                <div class="ui two buttons">
+                  <div class="ui basic green button" @click="book()">Buy Ticket</div>
+                </div>
                 <!-- </router-link> -->
               </div>
             </div>
@@ -115,7 +115,9 @@ export default {
       row: "",
       col: 0,
       time: 0,
-      sess: "",
+      sessName: "",
+      sesSeat: [],
+      sessBooked: [],
       colorredCheck: [],
       form: {
         id: "",
@@ -166,19 +168,24 @@ export default {
     },
     markgreen(col, row) {
       let newData = {
-        showTime: this.showTime,
-        seat: this.seat,
-        booked: this.booked,
-        confirm: this.confirm,
-        theatre: this.theatre,
-        movieName: this.movieName,
-        movieNameThai: this.movieNameThai
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
       };
       // console.log(row+col)
       // console.log(newData.booked[0].round1)
       // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
       // console.log(this.form.id_theatre)
+      this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = this.sessName;
+      // console.log(this.sesSeat);
+
       newData.seat[0].round1.push(15 * (row.charCodeAt(0) - 65) + col - 1);
+      newData.seat[0].sessSeat = this.sesSeat;
+      console.log(newData.seat[0]);
       axios
         .post(
           "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
@@ -192,13 +199,13 @@ export default {
     },
     markred(col, row) {
       let newData = {
-        showTime: this.showTime,
-        seat: this.seat,
-        booked: this.booked,
-        confirm: this.confirm,
-        theatre: this.theatre,
-        movieName: this.movieName,
-        movieNameThai: this.movieNameThai
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
       };
       // console.log(row+col)
       // console.log(newData.booked[0].round1)
@@ -211,46 +218,57 @@ export default {
           newData.seat[0].round1[i] ==
           15 * (row.charCodeAt(0) - 65) + col - 1
         ) {
-          // console.log(newData.booked[0].round1[i])
-          // console.log(newData.booked[0].round1)
-          delete newData.seat[0].round1[i];
-          newData.seat[0].round1 = newData.seat[0].round1.filter(
-            number => number != null
-          );
-          // console.log("++++"+newData.booked[0].round1)
+          if (
+            newData.seat[0].sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] ==
+            this.sessName
+          ) {
+            // console.log(newData.booked[0].round1[i])
+            // console.log(newData.booked[0].round1)
+
+            this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = "";
+            console.log(this.sesSeat);
+            newData.seat[0].sessSeat = this.sesSeat;
+            delete newData.seat[0].round1[i];
+            newData.seat[0].round1 = newData.seat[0].round1.filter(
+              number => number != null
+            );
+            axios
+              .post(
+                "http://localhost:3001/Theatre/theatreupdate/" +
+                  this.form.id_theatre,
+                newData
+              )
+              .then(response => {
+                console.log(response);
+              })
+              .catch(error => {});
+            window.location.reload();
+          } // console.log("++++"+newData.booked[0].round1)
         } else {
           // newData.booked[0].round1[i] = this.booked[0].round1[i];
         }
       }
       //newData.booked[0].round1.splice((15 * (row.charCodeAt(0) - 65) + col - 1),2);
-
-      axios
-        .post(
-          "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
-          newData
-        )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {});
-      window.location.reload();
     },
     book() {
       let newData = {
-        showTime: this.showTime,
-        seat: this.seat,
-        booked: this.booked,
-        confirm: this.confirm,
-        theatre: this.theatre,
-        movieName: this.movieName,
-        movieNameThai: this.movieNameThai
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
       };
       // console.log(row+col)
       // console.log(newData.booked[0].round1)
       // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
       // console.log(this.form.id_theatre)
-      newData.booked[0].round1.push([15 * (row.charCodeAt(0) - 65) + col - 1,this.sess]);
-      console.log(newData.booked[0].round1)
+      newData.booked[0].round1.push([
+        15 * (row.charCodeAt(0) - 65) + col - 1,
+        this.sess
+      ]);
+      console.log(newData.booked[0].round1);
       // axios
       //   .post(
       //     "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
@@ -260,11 +278,12 @@ export default {
       //     console.log(response);
       //   })
       //   .catch(error => {});
-    }
+    },
+    calculate(){}
   },
   mounted() {
     var now = new Date().getTime();
-    (this.sess = "A"), (this.time = now);
+    (this.sessName = "A"), (this.time = now);
     this.form.date =
       this.form.time +
       " " +
@@ -279,10 +298,11 @@ export default {
     axios
       .get("http://localhost:3001/Movie/" + this.form.id)
       .then(response => {
+        //console.log(response.data);
         this.form.titleth = response.data.movieNameThai;
         this.form.titleen = response.data.movieName;
         this.form.length = response.data.length;
-        this.imageUrl = response.data.imageUrl;
+        this.form.imageUrl = response.data.imageUrl;
         this.form.time = "15:20";
         this.form.theatre = response.data.theatre;
         this.form.price = response.data.price;
@@ -293,16 +313,17 @@ export default {
             this.form.id_theatre = response.data[0]._id;
             this.row = response.data[0].seat[0].row;
             this.col = response.data[0].seat[0].col;
-            (this.showTime = response.data[0].showTime),
-              (this.seat = response.data[0].seat),
-              (this.booked = response.data[0].booked),
-              (this.confirm = response.data[0].confirm);
-            console.log(this.seat[0]);
+            (this.form.showTime = response.data[0].showTime),
+              (this.form.seat = response.data[0].seat),
+              (this.form.booked = response.data[0].booked),
+              (this.form.confirm = response.data[0].confirm);
+            //console.log(this.form.seat[0]);
             for (var i = 0; i < this.row.length * this.col; i++) {
-              if (this.seat[0].round1.length > 0) {
-                for (var j = 0; j < this.seat[0].round1.length; j++) {
+              //  console.log(i);
+              if (this.form.seat[0].round1.length > 0) {
+                for (var j = 0; j < this.form.seat[0].round1.length; j++) {
                   //console.log(i, this.booked[0].round1[j]);
-                  if (i == this.seat[0].round1[j]) {
+                  if (i == this.form.seat[0].round1[j]) {
                     this.colorredCheck[i] = "green";
                     break;
                   } else {
@@ -312,6 +333,21 @@ export default {
               } else {
                 this.colorredCheck[i] = "red";
               }
+
+              if (this.form.seat[0].sessSeat.length > 0) {
+                this.sesSeat = this.form.seat[0].sessSeat;
+                //console.log("SEAT HAVe");
+              } else {
+                this.sesSeat[i] = "";
+                //console.log("SEAT HAVenot");
+              }
+              if (this.form.booked[0].sessBooked.length > 0) {
+                this.sessBooked = this.form.booked[0].sessBooked;
+                //console.log("book HAVe");
+              } else {
+                this.sessBooked[i] = "";
+                //console.log("booked HAVenot");
+              }
             }
             //console.log(this.colorredCheck);
           })
@@ -319,7 +355,7 @@ export default {
       })
       .catch(error => {});
 
-    console.log(this.form.theatre);
+    //console.log(this.form.theatre);
   }
 };
 </script>
