@@ -85,9 +85,15 @@
                 <div class="description">
                   <div class="ui divider"></div>
                   <div class="inline field">
+                    <div class="ui right pointing label">Seat:</div>
+                    <div class="ui label">{{getSeat()}}</div>
+                  </div>
+                </div>
+                <div class="description">
+                  <div class="ui divider"></div>
+                  <div class="inline field">
                     <div class="ui right pointing label">Price:</div>
-                    <div class="ui label">{{this.form.price}}</div>
-                    <div class="ui left pointing label">$</div>
+                    <div class="ui label">{{calculate()}}</div>
                   </div>
                 </div>
               </div>
@@ -112,6 +118,7 @@ export default {
   name: "selectPosition",
   data() {
     return {
+      textcol: ["A", "B", "C", "D", "E", "F"],
       row: "",
       col: 0,
       time: 0,
@@ -119,6 +126,7 @@ export default {
       sesSeat: [],
       sessBooked: [],
       colorredCheck: [],
+      totalprice: 0,
       form: {
         id: "",
         id_theatre: "",
@@ -185,7 +193,7 @@ export default {
 
       newData.seat[0].round1.push(15 * (row.charCodeAt(0) - 65) + col - 1);
       newData.seat[0].sessSeat = this.sesSeat;
-      console.log(newData.seat[0]);
+      //console.log(newData.seat[0]);
       axios
         .post(
           "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
@@ -196,6 +204,7 @@ export default {
         })
         .catch(error => {});
       window.location.reload();
+      //this.calculate()
     },
     markred(col, row) {
       let newData = {
@@ -212,7 +221,7 @@ export default {
       // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
       // console.log(this.form.id_theatre)
       // console.log(this.booked[0]);
-      console.log(newData.seat[0].round1);
+      //console.log(newData.seat[0].round1);
       for (let i = 0; i < newData.seat[0].round1.length; i++) {
         if (
           newData.seat[0].round1[i] ==
@@ -226,7 +235,7 @@ export default {
             // console.log(newData.booked[0].round1)
 
             this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = "";
-            console.log(this.sesSeat);
+            //console.log(this.sesSeat);
             newData.seat[0].sessSeat = this.sesSeat;
             delete newData.seat[0].round1[i];
             newData.seat[0].round1 = newData.seat[0].round1.filter(
@@ -248,6 +257,7 @@ export default {
           // newData.booked[0].round1[i] = this.booked[0].round1[i];
         }
       }
+      //this.calculate()
       //newData.booked[0].round1.splice((15 * (row.charCodeAt(0) - 65) + col - 1),2);
     },
     book() {
@@ -268,7 +278,7 @@ export default {
         15 * (row.charCodeAt(0) - 65) + col - 1,
         this.sess
       ]);
-      console.log(newData.booked[0].round1);
+      //console.log(newData.booked[0].round1);
       // axios
       //   .post(
       //     "http://localhost:3001/Theatre/theatreupdate/" + this.form.id_theatre,
@@ -279,7 +289,37 @@ export default {
       //   })
       //   .catch(error => {});
     },
-    calculate(){}
+    calculate() {
+      //console.log(this.totalprice);
+      this.totalprice = 0;
+      for (var i = 0; i < this.form.seat[0].sessSeat.length; i++) {
+        if (this.form.seat[0].sessSeat[i] == this.sessName) {
+          this.totalprice = parseInt(this.form.price) + this.totalprice;
+        }
+      }
+      //console.log(this.totalprice);
+      return this.totalprice;
+    },
+    getSeat() {
+      let Seat = "";
+      for (var j = 0; j < this.form.seat[0].sessSeat.length; j++) {
+        if (this.form.seat[0].sessSeat[j] == this.sessName) {
+          for (var i = 0; i < this.form.seat[0].round1.length; i++) {
+            Seat[i] =
+              this.textcol[
+                parseInt(parseInt(this.form.seat[0].round1[i]) / 15)
+              ] +
+              String(
+                parseInt(this.form.seat[0].round1[i]) +
+                  1 -
+                  parseInt(parseInt(this.form.seat[0].round1[i]) / 15) * 15
+              );
+          }
+        }
+      }
+
+      return Seat;
+    }
   },
   mounted() {
     var now = new Date().getTime();
