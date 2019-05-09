@@ -1,44 +1,62 @@
 <template>
   <div class="Total">
-    <div class="ui placeholder segment">
-      <div class="ui three column stackable center aligned grid">
-        <div class="middle aligned row">
-          <div class="column">
-            <div class="field">
-              <img class="top floated ui image" :src="form.imageUrl" width="280px" height="350px">
-            </div>
+    <div class="ui center container">
+    <div class="ui inverted segment">
+    <h1 class="ui yellow dividing header"><i class="money icon"></i>Confirm Order</h1>
+    
+    <div class="ui center container" style="text-align: center">
+      <div class="ui ordered steps">
+        <div class="completed step">
+          <div class="content">
+            <div class="title">Showtime</div>
+            <div class="description">Select Showtime</div>
           </div>
-          <div class="column">
-            <div class="content">
-              <div class="header">{{form.movieName}} {{form.movieNameThai}}</div>
-              <div class="description">date: {{startTime}}</div>
-              <div class="description">time: {{startTime}}</div>
-              <div class="description">Length: {{form.length}} Minutes</div>
-              <div class="description">Theater {{form.theatre}}</div>
-              <div class="description">Seat: {{form.seat}}</div>
-              <div class="description">Price: {{form.price}}</div>
-            </div>
+        </div>
+        <div class="completed step">
+          <div class="content">
+            <div class="title">Booking</div>
+            <div class="description">Select Seats</div>
           </div>
-          <div class="column">
-            <div class="ui icon header">
-              <i class="world icon"></i>
-              Add New Country
-            </div>
-            <div class="ui cards">
-              <div class="card">
-                <div class="content">
-                  <span id="time" v-html="time"></span>
-                </div>
-                <div class="extra content">
-                  <div class="ui two buttons">
-                    <div class="ui basic red button" @click="reset">Cancle</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        </div>
+        <div class="step">
+          <div class="content">
+            <div class="title">Confirm Order</div>
+            <div class="description">Verify order details</div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="ui segment">
+      <div class="ui grid">
+        <div class="four wide column">
+          <img class="ui rounded image" :src="form.imageUrl" width="250px" height="350px">
+        </div>
+        <div class="seven wide column">
+          <h3 class="ui yellow inverted top attached header">Order Confirmation</h3>
+          <div class="ui attached segment" style="text-align: left">
+          <h1 class="ui dividing header">{{form.movieName}} 
+          <div class="sub header">{{form.movieNameThai}} |<i class="clock icon" width="60px" height="60px"></i>
+          Length: {{form.length}} minutes</div></h1>
+            <img class="ui rounded image" src="../assets/chair_red.png" width="60px" height="60px">
+            <h3 class="ui header">Seat : {{form.seat}}</h3>
+            <h4 class="ui header">Theater : {{form.theatre}}</h4>
+            <div class="description">Date: {{startTime}}</div>
+            <div class="description">Time: {{startTime}}</div>
+          <h1 class="ui red right aligned header">Price: {{form.price}}</h1>
+          </div>
+        </div>
+        <div class="five wide column">
+          <h3 class="ui yellow inverted top attached header">Time remander</h3>
+          <div class="ui attached segment" style="text-align: center">
+          <h1><i class="clock icon"></i></h1>
+          <h1 id="time" v-html="time" style="text-align: center"></h1>
+          <div class="ui fluid inverted red button" @click="reset">Cancle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
     </div>
   </div>
 </template>
