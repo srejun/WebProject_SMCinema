@@ -141,10 +141,10 @@
                   </div>
                   <div class="extra content">
                     <router-link
-                      :to="{ path:'/Total/' + this.form.id +'/'+ this.$route.params.round +'/' + buyTicket() + '/' + calculate() + '/' + getSeat()}"
+                      :to="{ path:'/Total/' + this.form.id +'/'+ this.$route.params.round +'/' + gettime() + '/' + calculate() + '/' + getSeat()}"
                     >
                       <div class="ui two buttons">
-                        <div class="ui inverted green button" @click="book()">Buy Ticket</div>
+                        <div class="ui inverted green button" @click="buyTicket()">Buy Ticket</div>
                       </div>
                     </router-link>
                   </div>
@@ -199,6 +199,18 @@ export default {
   },
   methods: {
     buyTicket() {
+      let count=0
+      for(let i=0 ;i<this.row.length * this.col;i++){
+        if((this.getround(this.$route.params.round)[i]!="")&&this.sessSeat[i]==this.sessName){
+          count++;
+        }
+      }
+      if(count==0){
+        alert("Please Select Seat")
+        window.location.reload();
+      }
+    },
+    gettime() {
       var now = new Date().getTime();
       return now;
     },
@@ -219,8 +231,9 @@ export default {
       this.sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = this.sessName;
       // console.log(this.sessSeat);
 
-      this.getround(this.$route.params.round)[15 * (row.charCodeAt(0) - 65) + col - 1] =
-        15 * (row.charCodeAt(0) - 65) + col - 1;
+      this.getround(this.$route.params.round)[
+        15 * (row.charCodeAt(0) - 65) + col - 1
+      ] = String(15 * (row.charCodeAt(0) - 65) + col - 1);
       newData.seat[0].sessSeat = this.sessSeat;
       //console.log(newData.seat[0]);
       axios
@@ -251,23 +264,22 @@ export default {
       // console.log(this.form.id_theatre)
       // console.log(this.booked[0]);
       //console.log(newData.seat[0].round1);
+      console.log(newData.seat[0].sessSeat);
       for (let i = 0; i < this.col * this.row.length; i++) {
         if (
-          this.getround(this.$route.params.round) ==
-          15 * (row.charCodeAt(0) - 65) + col - 1
+          this.getround(this.$route.params.round)[i] ==
+          String(15 * (row.charCodeAt(0) - 65) + col - 1)
         ) {
-          if (
-            newData.seat[0].sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] ==
-            this.sessName
-          ) {
+          if (newData.seat[0].sessSeat[i] == this.sessName) {
+            console.log(15 * (row.charCodeAt(0) - 65) + col - 1);
             // console.log(newData.booked[0].round1[i])
             // console.log(newData.booked[0].round1)
 
-            this.sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = "";
+            this.sessSeat[i] = "";
             //console.log(this.sessSeat);
             newData.seat[0].sessSeat = this.sessSeat;
             this.getround(this.$route.params.round)[i] = "";
-            
+
             axios
               .post(
                 "http://localhost:3001/Theatre/theatreupdate/" +
@@ -320,7 +332,10 @@ export default {
       //console.log(this.totalprice);
       let totalprice = 0;
       for (var i = 0; i < this.col * this.row.length; i++) {
-        if (this.form.seat[0].sessSeat[i] == this.sessName&&(this.getround(this.$route.params.round)[i])) {
+        if (
+          this.form.seat[0].sessSeat[i] == this.sessName &&
+          this.getround(this.$route.params.round)[i]
+        ) {
           totalprice = parseInt(this.form.price) + totalprice;
         }
       }
@@ -335,22 +350,21 @@ export default {
 
       for (var j = 0; j < this.col * this.row.length; j++) {
         //console.log(this.getround(this.$route.params.round)[j])
-        if (this.form.seat[0].sessSeat[j] == this.sessName&&(this.getround(this.$route.params.round)[j])) {
+        if (
+          this.form.seat[0].sessSeat[j] == this.sessName &&
+          this.getround(this.$route.params.round)[j]
+        ) {
           //console.log("ADD",j)
           Seat.push(
-            this.textcol[parseInt(parseInt(j)/ 15)] +
-              String(
-                parseInt(j)+
-                  1 -
-                  parseInt(parseInt(j)/ 15) * 15
-              )
+            this.textcol[parseInt(parseInt(j) / 15)] +
+              String(parseInt(j) + 1 - parseInt(parseInt(j) / 15) * 15)
           );
         }
       }
 
       return Seat;
     },
-    getround(round){
+    getround(round) {
       let newData = {
         showTime: this.form.showTime,
         seat: this.form.seat,
@@ -360,27 +374,23 @@ export default {
         movieName: this.form.movieName,
         movieNameThai: this.form.movieNameThai
       };
-      if(round==1){
-        return newData.seat[0].round1
-      }
-      else if(round==2){
-        return newData.seat[0].round2
-      }
-      else if(round==3){
-        return newData.seat[0].round3
-      }
-      else if(round==4){
-        return newData.seat[0].round4
-      }
-      else if(round==5){
-        return newData.seat[0].round5
+      if (round == 1) {
+        return newData.seat[0].round1;
+      } else if (round == 2) {
+        return newData.seat[0].round2;
+      } else if (round == 3) {
+        return newData.seat[0].round3;
+      } else if (round == 4) {
+        return newData.seat[0].round4;
+      } else if (round == 5) {
+        return newData.seat[0].round5;
       }
     }
   },
   mounted() {
     var now = new Date().getTime();
     (this.sessName = "B"), (this.time = now);
-    
+
     //console.log(this.$route.params.movieId)
     this.form.id = this.$route.params.movieId;
     axios
@@ -392,9 +402,9 @@ export default {
         this.form.length = response.data.length;
         this.form.imageUrl = response.data.imageUrl;
         (this.form.showTime = response.data.showTime),
-          console.log(this.form.showTime);
-        console.log(this.$route.params.round - 1);
-        this.form.time = this.form.showTime[this.$route.params.round - 1];
+          //console.log(this.form.showTime);
+          //console.log(this.$route.params.round - 1);
+          (this.form.time = this.form.showTime[this.$route.params.round - 1]);
         this.form.theatre = response.data.theatre;
         this.form.price = response.data.price;
         this.form.date =
@@ -418,8 +428,8 @@ export default {
               (this.form.seat = response.data[0].seat),
               (this.form.booked = response.data[0].booked),
               (this.form.confirm = response.data[0].confirm);
-              this.getround(this.$route.params.round)
-              console.log(this.getround(this.$route.params.round))
+            this.getround(this.$route.params.round);
+            //console.log(this.getround(this.$route.params.round))
             //console.log(this.form.seat[0]);
             //console.log(this.col*this.row.length)
             for (var i = 0; i < this.col * this.row.length; i++) {
@@ -427,7 +437,9 @@ export default {
               if (this.getround(this.$route.params.round).length > 0) {
                 for (var j = 0; j < this.col * this.row.length; j++) {
                   //console.log(i, this.booked[0].round1[j]);
-                  if (i === this.getround(this.$route.params.round)[j]) {
+                  if (
+                    String(i) === this.getround(this.$route.params.round)[j]
+                  ) {
                     this.colorredCheck[i] = "green";
                     break;
                   } else {
@@ -458,7 +470,7 @@ export default {
           .catch(error => {});
       })
       .catch(error => {});
-    
+
     //console.log(this.form.theatre);
   }
 };

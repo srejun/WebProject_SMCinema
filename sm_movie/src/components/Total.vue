@@ -53,8 +53,8 @@
                 >
                 <h3 class="ui header">Seat : {{this.$route.params.seat}}</h3>
                 <h4 class="ui header">Theater : {{form.theatre}}</h4>
-                <div class="description">Date: {{startTime}}</div>
-                <div class="description">Time: {{startTime}}</div>
+                <div class="description">Date: {{getdate(startTime)}}</div>
+                <div class="description">Time: {{gettime(startTime)}}</div>
                 <h1 class="ui red right aligned header">Price: {{form.price}}</h1>
               </div>
             </div>
@@ -65,7 +65,7 @@
                   <i class="clock icon"></i>
                 </h1>
                 <h1 id="time" v-html="time" style="text-align: center"></h1>
-                <div class="ui fluid inverted red button" @click="pause">Cancle</div>
+                <div class="ui fluid inverted red button" @click="pause">Cancel</div>
               </div>
             </div>
           </div>
@@ -95,6 +95,12 @@ export default {
     };
   },
   methods: {
+    gettime(time){
+        return (new Date(time).getHours() + ':' + new Date(time).getMinutes())
+    },
+    getdate(time){
+        return (new Date(time).toDateString(  ))
+    },
     reset: function() {
       this.form.state = "started";
       this.form.startTime = Date.now();
@@ -110,7 +116,8 @@ export default {
         confirm: this.form.confirm,
         theatre: this.form.theatre,
         movieName: this.form.movieName,
-        movieNameThai: this.form.movieNameThai
+        movieNameThai: this.form.movieNameThai,
+        round: this.$route.params.round
       };
       // console.log(row+col)
       // console.log(newData.booked[0].round1)
@@ -118,9 +125,10 @@ export default {
       // console.log(this.form.id_theatre)
       // console.log(this.booked[0]);
       //console.log(this.getround(this.$route.params.round));
-      console.log(newData.seat[0].sessSeat)
+      
       for (let i = 0; i < this.col * this.row.length; i++) {
         //console.log(this.getround(this.$route.params.round))
+        //console.log(this.getround(this.$route.params.round)[i])
         if (
           this.getround(this.$route.params.round)[i] == i
         ) {
@@ -130,8 +138,8 @@ export default {
           ) {
             // console.log(newData.booked[0].round1[i])
             // console.log(newData.booked[0].round1)
-            console.log(i)
-            this.sessSeat[i] = "";
+            //console.log(i)
+            //this.sessSeat[i] = "";
             //console.log(this.sessSeat);
             newData.seat[0].sessSeat[i] = "";
             this.getround(this.$route.params.round)[i] = "";
@@ -172,7 +180,7 @@ export default {
         movieNameThai: this.form.movieNameThai
       };
       if(round==1){
-        return this.getround(this.$route.params.round)
+        return newData.seat[0].round1
       }
       else if(round==2){
         return newData.seat[0].round2
