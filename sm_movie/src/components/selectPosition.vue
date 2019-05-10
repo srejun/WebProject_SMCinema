@@ -1,141 +1,158 @@
 <template>
   <div class="selectPosition">
     <div class="ui center container">
-     <h1 class="ui yellow dividing header"><i class="hand point down outline icon"></i>Select Position</h1>
+      <h1 class="ui yellow dividing header">
+        <i class="hand point down outline icon"></i>Select Position
+      </h1>
       <div class="ui center container" style="text-align: center">
-          <div class="ui ordered steps">
-            <div class="completed step">
-              <div class="content">
-                <div class="title">Showtime</div>
-                <div class="description">Select Showtime</div>
-              </div>
+        <div class="ui ordered steps">
+          <div class="completed step">
+            <div class="content">
+              <div class="title">Showtime</div>
+              <div class="description">Select Showtime</div>
             </div>
-            <div class="step">
-              <div class="content">
-                <div class="title">Booking</div>
-                <div class="description">Select Seats</div>
-              </div>
+          </div>
+          <div class="step">
+            <div class="content">
+              <div class="title">Booking</div>
+              <div class="description">Select Seats</div>
             </div>
-            <div class="disabled step">
-              <div class="content">
-                <div class="title">Confirm Order</div>
-                <div class="description">Verify order details</div>
-              </div>
+          </div>
+          <div class="disabled step">
+            <div class="content">
+              <div class="title">Confirm Order</div>
+              <div class="description">Verify order details</div>
             </div>
           </div>
         </div>
-     <div class="ui segment">
-    <div class="ui grid">
-      <div class="row">
-        <div class="twelve wide column">
+      </div>
+      <div class="ui segment">
+        <div class="ui grid">
           <div class="row">
             <div class="twelve wide column">
-              <div class="ui middle aligned center aligned grid">
-                <img class="ui image" src="../assets/screen.png">
-              </div>
-            </div>
-            <br>
-            <p></p>
-            <div class="row"> 
-              <div class="twelve wide column">
-                <div class="ui middle aligned center aligned grid">
-                  <div class="ui segment">
-                  <table class="table">
-                    <thead>
-                      <th></th>
-                      <td v-for="headcol in col" v-bind:key="headcol">
-                        <strong class="ui equal width center aligned padded grid">{{headcol}}</strong>
-                      </td>
-                    </thead>
-                    <tbody>
-                      <tr v-for="chairrow in row" v-bind:key="chairrow">
-                        <th>{{chairrow}}</th>
+              <div class="row">
+                <div class="twelve wide column">
+                  <div class="ui middle aligned center aligned grid">
+                    <img class="ui image" src="../assets/screen.png">
+                  </div>
+                </div>
+                <br>
+                <p></p>
+                <div class="row">
+                  <div class="twelve wide column">
+                    <div class="ui middle aligned center aligned grid">
+                      <div class="ui segment">
+                        <table class="table">
+                          <thead>
+                            <th></th>
+                            <td v-for="headcol in col" v-bind:key="headcol">
+                              <strong class="ui equal width center aligned padded grid">{{headcol}}</strong>
+                            </td>
+                          </thead>
+                          <tbody>
+                            <tr v-for="chairrow in row" v-bind:key="chairrow">
+                              <th>{{chairrow}}</th>
 
-                        <td v-for="chaircol in col" v-bind:key="chaircol">
-                          <!-- <th>{{chaircol}}</th> -->
-                          <!-- <button class="ui button"> -->
-                          <div
-                            class="field"
-                            v-if="colorredCheck[(15*(chairrow.charCodeAt(0)-65))+chaircol-1] == 'red'"
-                            @click="markgreen(chaircol,chairrow)"
-                          >
-                            <img
-                              class="ui image"
-                              src="../assets/chair_red.png"
-                              width="50px"
-                              height="50px"
-                            >
-                            <span></span>
-                          </div>
-                          <div
-                            class="field"
-                            v-else-if="colorredCheck[(15*(chairrow.charCodeAt(0)-65))+chaircol-1] == 'green'"
-                            @click="markred(chaircol,chairrow)"
-                          >
-                            <img
-                              class="ui image"
-                              src="../assets/chair_green.png"
-                              width="50px"
-                              height="50px"
-                            >
-                            <span></span>
-                          </div>
-                          <div class="field" v-else>
-                            <img
-                              class="ui image"
-                              src="../assets/chair_gray.png"
-                              width="50px"
-                              height="50px"
-                            >
-                            <span></span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                              <td v-for="chaircol in col" v-bind:key="chaircol">
+                                <!-- <th>{{chaircol}}</th> -->
+                                <!-- <button class="ui button"> -->
+                                <div
+                                  class="field"
+                                  v-if="colorredCheck[(15*(chairrow.charCodeAt(0)-65))+chaircol-1] == 'red'"
+                                  @click="markgreen(chaircol,chairrow)"
+                                >
+                                  <img
+                                    class="ui image"
+                                    src="../assets/chair_red.png"
+                                    width="50px"
+                                    height="50px"
+                                  >
+                                  <span></span>
+                                </div>
+                                <div
+                                  class="field"
+                                  v-else-if="colorredCheck[(15*(chairrow.charCodeAt(0)-65))+chaircol-1] == 'green'"
+                                  @click="markred(chaircol,chairrow)"
+                                >
+                                  <img
+                                    class="ui image"
+                                    src="../assets/chair_green.png"
+                                    width="50px"
+                                    height="50px"
+                                  >
+                                  <span></span>
+                                </div>
+                                <div class="field" v-else>
+                                  <img
+                                    class="ui image"
+                                    src="../assets/chair_gray.png"
+                                    width="50px"
+                                    height="50px"
+                                  >
+                                  <span></span>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="four wide column">
+              <h3 class="ui orange dividing header">
+                <i class="clipboard icon"></i>Information
+              </h3>
+              <div class="ui cards">
+                <div class="card">
+                  <div class="content">
+                    <img
+                      class="top floated ui image"
+                      :src="form.imageUrl"
+                      width="280px"
+                      height="350px"
+                    >
+                    <div class="header">{{form.titleen}} {{form.titleth}}</div>
+                    <div class="description">{{form.date}}</div>
+                    <div class="description">
+                      <i class="clock icon"></i>
+                      {{form.length}} Minutes
+                    </div>
+                    <div class="description">
+                      <i class="film icon"></i>
+                      Theater {{form.theatre}}
+                    </div>
+                    <div class="description">
+                      <div class="ui divider"></div>
+                      <div class="inline field">
+                        <div class="ui right pointing label">Seat:</div>
+                        <div class="ui label">{{getSeat()}}</div>
+                      </div>
+                    </div>
+                    <div class="description">
+                      <div class="ui divider"></div>
+                      <div class="inline field">
+                        <div class="ui right pointing label">Price:</div>
+                        <div class="ui label">{{calculate()}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="extra content">
+                    <router-link
+                      :to="{ path:'/Total/' + this.form.id +'/'+ this.$route.params.round +'/' + buyTicket() + '/' + calculate() + '/' + getSeat()}"
+                    >
+                      <div class="ui two buttons">
+                        <div class="ui inverted green button" @click="book()">Buy Ticket</div>
+                      </div>
+                    </router-link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="four wide column">
-          <h3 class="ui orange dividing header"><i class="clipboard icon"></i>Information</h3>
-          <div class="ui cards">
-            <div class="card">
-              <div class="content">
-                <img class="top floated ui image" :src="form.imageUrl" width="280px" height="350px">
-                <div class="header">{{form.titleen}} {{form.titleth}}</div>
-                <div class="description">{{form.date}}</div>
-                <div class="description"><i class="clock icon"></i>{{form.length}} Minutes</div>
-                <div class="description"><i class="film icon"></i>Theater {{form.theatre}}</div>
-                <div class="description">
-                  <div class="ui divider"></div>
-                  <div class="inline field">
-                    <div class="ui right pointing label">Seat:</div>
-                    <div class="ui label">{{getSeat()}}</div>
-                  </div>
-                </div>
-                <div class="description">
-                  <div class="ui divider"></div>
-                  <div class="inline field">
-                    <div class="ui right pointing label">Price:</div>
-                    <div class="ui label">{{calculate()}}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="extra content">
-                <!-- <router-link :to="{ path: 'Total/' + buyTicket()}"> -->
-                <div class="ui two buttons">
-                  <div class="ui inverted green button" @click="book()">Buy Ticket</div>
-                </div>
-                <!-- </router-link> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
       </div>
     </div>
   </div>
@@ -151,27 +168,10 @@ export default {
       col: 0,
       time: 0,
       sessName: "",
-      sesSeat: [],
+      sessSeat: [],
       sessBooked: [],
       colorredCheck: [],
-      totalprice: 0,
-      form: {
-        id: "",
-        id_theatre: "",
-        titleth: "",
-        titleen: "",
-        length: "",
-        date: "",
-        time: "",
-        imageUrl: "",
-        theatre: "",
-        showTime: [],
-        seat: [],
-        booked: [],
-        confirm: [],
-        price: "",
-        code: ""
-      },
+      form: {},
       week: [
         "Sunday",
         "Monday",
@@ -216,11 +216,12 @@ export default {
       // console.log(newData.booked[0].round1)
       // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
       // console.log(this.form.id_theatre)
-      this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = this.sessName;
-      // console.log(this.sesSeat);
+      this.sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = this.sessName;
+      // console.log(this.sessSeat);
 
-      newData.seat[0].round1.push(15 * (row.charCodeAt(0) - 65) + col - 1);
-      newData.seat[0].sessSeat = this.sesSeat;
+      this.getround(this.$route.params.round)[15 * (row.charCodeAt(0) - 65) + col - 1] =
+        15 * (row.charCodeAt(0) - 65) + col - 1;
+      newData.seat[0].sessSeat = this.sessSeat;
       //console.log(newData.seat[0]);
       axios
         .post(
@@ -250,9 +251,9 @@ export default {
       // console.log(this.form.id_theatre)
       // console.log(this.booked[0]);
       //console.log(newData.seat[0].round1);
-      for (let i = 0; i < newData.seat[0].round1.length; i++) {
+      for (let i = 0; i < this.col * this.row.length; i++) {
         if (
-          newData.seat[0].round1[i] ==
+          this.getround(this.$route.params.round) ==
           15 * (row.charCodeAt(0) - 65) + col - 1
         ) {
           if (
@@ -262,13 +263,11 @@ export default {
             // console.log(newData.booked[0].round1[i])
             // console.log(newData.booked[0].round1)
 
-            this.sesSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = "";
-            //console.log(this.sesSeat);
-            newData.seat[0].sessSeat = this.sesSeat;
-            delete newData.seat[0].round1[i];
-            newData.seat[0].round1 = newData.seat[0].round1.filter(
-              number => number != null
-            );
+            this.sessSeat[15 * (row.charCodeAt(0) - 65) + col - 1] = "";
+            //console.log(this.sessSeat);
+            newData.seat[0].sessSeat = this.sessSeat;
+            this.getround(this.$route.params.round)[i] = "";
+            
             axios
               .post(
                 "http://localhost:3001/Theatre/theatreupdate/" +
@@ -302,10 +301,10 @@ export default {
       // console.log(newData.booked[0].round1)
       // console.log("new"+newData.booked[0].round1.push(5*(row.charCodeAt(0)-65)+col-1))
       // console.log(this.form.id_theatre)
-      newData.booked[0].round1.push([
-        15 * (row.charCodeAt(0) - 65) + col - 1,
-        this.sess
-      ]);
+      // newData.booked[0].round1.push([
+      //   15 * (row.charCodeAt(0) - 65) + col - 1,
+      //   this.sess
+      // ]);
       //console.log(newData.booked[0].round1);
       // axios
       //   .post(
@@ -319,61 +318,95 @@ export default {
     },
     calculate() {
       //console.log(this.totalprice);
-      this.totalprice = 0;
-      for (var i = 0; i < this.form.seat[0].sessSeat.length; i++) {
-        if (this.form.seat[0].sessSeat[i] == this.sessName) {
-          this.totalprice = parseInt(this.form.price) + this.totalprice;
+      let totalprice = 0;
+      for (var i = 0; i < this.col * this.row.length; i++) {
+        if (this.form.seat[0].sessSeat[i] == this.sessName&&(this.getround(this.$route.params.round)[i])) {
+          totalprice = parseInt(this.form.price) + totalprice;
         }
       }
       //console.log(this.totalprice);
-      return this.totalprice;
+      return totalprice;
     },
     getSeat() {
-      let Seat = "";
-      for (var j = 0; j < this.form.seat[0].sessSeat.length; j++) {
-        if (this.form.seat[0].sessSeat[j] == this.sessName) {
-          for (var i = 0; i < this.form.seat[0].round1.length; i++) {
-            Seat[i] =
-              this.textcol[
-                parseInt(parseInt(this.form.seat[0].round1[i]) / 15)
-              ] +
+      let Seat = [];
+      //console.log((parseInt(this.getround(this.$route.params.round)[11])==11))
+
+      // for (var j = 0; j < this.col*this.row.length; j++) {
+
+      for (var j = 0; j < this.col * this.row.length; j++) {
+        //console.log(this.getround(this.$route.params.round)[j])
+        if (this.form.seat[0].sessSeat[j] == this.sessName&&(this.getround(this.$route.params.round)[j])) {
+          //console.log("ADD",j)
+          Seat.push(
+            this.textcol[parseInt(parseInt(j)/ 15)] +
               String(
-                parseInt(this.form.seat[0].round1[i]) +
+                parseInt(j)+
                   1 -
-                  parseInt(parseInt(this.form.seat[0].round1[i]) / 15) * 15
-              );
-          }
+                  parseInt(parseInt(j)/ 15) * 15
+              )
+          );
         }
       }
 
       return Seat;
+    },
+    getround(round){
+      let newData = {
+        showTime: this.form.showTime,
+        seat: this.form.seat,
+        booked: this.form.booked,
+        confirm: this.form.confirm,
+        theatre: this.form.theatre,
+        movieName: this.form.movieName,
+        movieNameThai: this.form.movieNameThai
+      };
+      if(round==1){
+        return newData.seat[0].round1
+      }
+      else if(round==2){
+        return newData.seat[0].round2
+      }
+      else if(round==3){
+        return newData.seat[0].round3
+      }
+      else if(round==4){
+        return newData.seat[0].round4
+      }
+      else if(round==5){
+        return newData.seat[0].round5
+      }
     }
   },
   mounted() {
     var now = new Date().getTime();
-    (this.sessName = "A"), (this.time = now);
-    this.form.date =
-      this.form.time +
-      " " +
-      this.week[new Date().getDay()] +
-      " " +
-      new Date().getDate() +
-      " " +
-      this.month[new Date().getMonth() + 1] +
-      " " +
-      new Date().getFullYear();
-    this.form.id = "5ccf2482b240a42d5c513262";
+    (this.sessName = "B"), (this.time = now);
+    
+    //console.log(this.$route.params.movieId)
+    this.form.id = this.$route.params.movieId;
     axios
-      .get("http://localhost:3001/Movie/" + this.form.id)
+      .get("http://localhost:3001/getMovies/details/" + this.form.id)
       .then(response => {
         //console.log(response.data);
         this.form.titleth = response.data.movieNameThai;
         this.form.titleen = response.data.movieName;
         this.form.length = response.data.length;
         this.form.imageUrl = response.data.imageUrl;
-        this.form.time = "15:20";
+        (this.form.showTime = response.data.showTime),
+          console.log(this.form.showTime);
+        console.log(this.$route.params.round - 1);
+        this.form.time = this.form.showTime[this.$route.params.round - 1];
         this.form.theatre = response.data.theatre;
         this.form.price = response.data.price;
+        this.form.date =
+          this.form.time +
+          " " +
+          this.week[new Date().getDay()] +
+          " " +
+          new Date().getDate() +
+          " " +
+          this.month[new Date().getMonth() + 1] +
+          " " +
+          new Date().getFullYear();
         axios
           .get("http://localhost:3001/Theatre/" + this.form.theatre)
           .then(response => {
@@ -385,13 +418,16 @@ export default {
               (this.form.seat = response.data[0].seat),
               (this.form.booked = response.data[0].booked),
               (this.form.confirm = response.data[0].confirm);
+              this.getround(this.$route.params.round)
+              console.log(this.getround(this.$route.params.round))
             //console.log(this.form.seat[0]);
-            for (var i = 0; i < this.row.length * this.col; i++) {
+            //console.log(this.col*this.row.length)
+            for (var i = 0; i < this.col * this.row.length; i++) {
               //  console.log(i);
-              if (this.form.seat[0].round1.length > 0) {
-                for (var j = 0; j < this.form.seat[0].round1.length; j++) {
+              if (this.getround(this.$route.params.round).length > 0) {
+                for (var j = 0; j < this.col * this.row.length; j++) {
                   //console.log(i, this.booked[0].round1[j]);
-                  if (i == this.form.seat[0].round1[j]) {
+                  if (i === this.getround(this.$route.params.round)[j]) {
                     this.colorredCheck[i] = "green";
                     break;
                   } else {
@@ -403,10 +439,10 @@ export default {
               }
 
               if (this.form.seat[0].sessSeat.length > 0) {
-                this.sesSeat = this.form.seat[0].sessSeat;
+                this.sessSeat = this.form.seat[0].sessSeat;
                 //console.log("SEAT HAVe");
               } else {
-                this.sesSeat[i] = "";
+                this.sessSeat[i] = "";
                 //console.log("SEAT HAVenot");
               }
               if (this.form.booked[0].sessBooked.length > 0) {
@@ -422,7 +458,7 @@ export default {
           .catch(error => {});
       })
       .catch(error => {});
-
+    
     //console.log(this.form.theatre);
   }
 };

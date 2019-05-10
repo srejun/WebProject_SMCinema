@@ -52,27 +52,32 @@
                   
                   <div class="ui meta">{{Movie.length}} minutes | <i class="volume up icon"></i>TH </div>
 
-                  
+                  <router-link :to="{ path: 'buyticket/selectPosition/' + this.Movie._id+ '/'+ '1'}">
                   <a v-if="this.can[0]==0">
                     <button class="ui disabled  button" >{{Movie.showTime[0]}}</button>
                   </a>
                   <a v-else>
                     <button class="ui inverted brown button" >{{Movie.showTime[0]}}</button>
                   </a>
+                  </router-link>
 
+                  <router-link :to="{ path: 'buyticket/selectPosition/' + this.Movie._id+ '/'+ '3'}">
                    <a v-if="this.can[2]==0">
                     <button class="ui disabled  button" style="margin:0px 0px 0px 30px">{{Movie.showTime[2]}}</button>
                   </a>
                   <a v-else>
                     <button class="ui inverted brown button" style="margin:0px 0px 0px 30px">{{Movie.showTime[2]}}</button>     
                   </a>
+                  </router-link>
 
+                  <router-link :to="{ path: 'buyticket/selectPosition/' + this.Movie._id+ '/'+ '5'}">
                   <a v-if="this.can[4]==0">
                     <button class="ui disabled  button" style="margin:25px 0px 0px 30px">{{Movie.showTime[4]}}</button>
                   </a>
                   <a v-else>
                     <button class="ui inverted brown button" style="margin:25px 0px 0px 30px">{{Movie.showTime[4]}}</button>     
-                  </a>  
+                  </a>
+                  </router-link>  
               </div>
              
             </div>
@@ -87,19 +92,23 @@
                 <p>{{Movie.movieNameThai}}</p>                
                 <div class="ui meta">{{Movie.length}} minutes | <i class="volume up icon"></i>EN / TH </div>          
 
+                <router-link :to="{ path: 'buyticket/selectPosition/' + this.Movie._id+ '/'+ '2'}">
                 <a v-if="this.can[1]==0">
                     <button class="ui disabled button" style="margin:20px 0px 0px">{{Movie.showTime[1]}}</button>
                 </a>
                 <a v-else>
                     <button class="ui inverted brown button" style="margin:20px 0px 0px">{{Movie.showTime[1]}}</button>
                 </a>
+                </router-link>  
 
+                <router-link :to="{ path: 'buyticket/selectPosition/' + this.Movie._id+ '/'+ '4'}">
                 <a v-if="this.can[3]==0">
                     <button class="ui disabled button" style="margin:25px 0px 0px 30px">{{Movie.showTime[3]}}</button>                
                 </a>
                 <a v-else>
                     <button class="ui inverted brown button" style="margin:25px 0px 0px 30px">{{Movie.showTime[3]}}</button>                
                 </a>
+                </router-link> 
               </div>
              
             </div>
@@ -139,6 +148,8 @@ export default {
       .then((response) => {
         console.log(response.data)
         this.Movie = response.data
+
+        console.log("55555555555555555" + this.Movie._id)
 
         var now = new Date();
         // console.log(typeof(now.getHours()))
