@@ -1,6 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import testfile from '@/components/testfile'
+import home from '@/components/home'
+import movie from '@/components/movie'
+import buyticket from '@/components/buyticket'
+import moviedetail from '@/components/moviedetail'
+import movieadmin from '@/components/movieadmin'
+import edit from '@/components/edit'
+import add from '@/components/addmovie'
+import aboutus from '@/components/aboutus'
 import selectPosition from '@/components/selectPosition'
 import Total from '@/components/Total'
 
@@ -9,12 +17,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/selectPosition',
+      path: '/buyticket/buyticket/selectPosition/:movieId/:round',
       name: 'selectPosition',
       component: selectPosition
     },
     {
-      path: '/Total/:time',
+      path: '/Total/:id/:round/:time/:price/:seat',
       name: 'Total',
       component: Total
     },
